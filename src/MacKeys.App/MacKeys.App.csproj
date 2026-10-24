@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>MacKeys</RootNamespace>
+    <AssemblyName>MacKeys</AssemblyName>
+    <ApplicationIcon>Assets\mac-keys.ico</ApplicationIcon>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <Version>1.0.0</Version>
+    <Product>Mac Keys</Product>
+    <Description>게임 창이 전경일 때 PowerToys Keyboard Manager 프로필을 바꿉니다.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MacKeys.Core\MacKeys.Core.csproj" />
+  </ItemGroup>
+</Project>
