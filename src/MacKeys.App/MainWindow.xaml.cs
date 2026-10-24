@@ -55,7 +55,7 @@ public partial class MainWindow : Window
         catch (Exception exception)
         {
             if (interactive)
-                MessageBox.Show(this, exception.Message, "Mac Keys", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(this, exception.Message, App.ProductName, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         _tray?.Dispose();
@@ -428,7 +428,7 @@ public partial class MainWindow : Window
 
             var rows = (RemapCatalog.Shortcuts.Count + 1) / 2;
             var shortcutCard = 130 + rows * 40;
-            var gamesCard = 210 + _settings.Games.Count * 44;
+            var gamesCard = 250 + _settings.Games.Count * 44;
             var conservative = 120 + Math.Max(shortcutCard, gamesCard) + 160 + 52 + 40;
             double caption = 32;
             if (Content is FrameworkElement root && root.ActualHeight > 1 && ActualHeight > root.ActualHeight + 8)
@@ -507,7 +507,7 @@ public partial class MainWindow : Window
 
         ForegroundStatusText.Text = DescribeForeground(_foreground, _session.Suspended);
         if (_tray != null && profile != null)
-            _tray.SetTooltip("Mac Keys — " + ModeName(profile));
+            _tray.SetTooltip(App.ProductName + " — " + ModeName(profile));
     }
 
     private void UpdateSuspendButton()

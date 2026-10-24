@@ -17,7 +17,7 @@ public partial class ProcessPickerWindow : Window
         }
         catch (Exception exception)
         {
-            MessageBox.Show(this, exception.Message, "Mac Keys", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(this, exception.Message, App.ProductName, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 
@@ -31,7 +31,7 @@ public partial class ProcessPickerWindow : Window
     {
         if (Rows.SelectedItem is not Row row)
         {
-            MessageBox.Show(this, "추가할 프로세스를 고르세요.", "Mac Keys", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(this, "추가할 프로세스를 고르세요.", App.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
 

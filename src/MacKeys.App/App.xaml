@@ -69,28 +69,33 @@
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
         </Style>
-        <Style TargetType="GridViewColumnHeader">
-            <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
-            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource CardBorder}" />
-            <Setter Property="BorderThickness" Value="0,0,1,1" />
-            <Setter Property="Padding" Value="8,5" />
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Setter Property="FontWeight" Value="SemiBold" />
+        <Style x:Key="TableRow" TargetType="ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="GridViewColumnHeader">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="Center"
-                                              RecognizesAccessKey="True" />
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Bd"
+                                Background="Transparent"
+                                BorderBrush="{DynamicResource CardBorder}"
+                                BorderThickness="0,0,0,1"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter />
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ButtonBackground}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource RowSelected}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
     </Application.Resources>
 </Application>

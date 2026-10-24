@@ -18,6 +18,7 @@ internal static class Theme
         resources["TextMuted"] = Brush(light ? "#5C6570" : "#B4BCC6");
         resources["Accent"] = Brush("#2F6FED");
         resources["ButtonBackground"] = Brush(light ? "#EEF1F5" : "#343A42");
+        resources["RowSelected"] = Brush(light ? "#D9E6FF" : "#2A4068");
         resources["ButtonBorder"] = Brush(light ? "#D0D5DD" : "#4A515B");
         resources["WarnBackground"] = Brush(light ? "#FFF6E5" : "#3A311C");
         resources["WarnForeground"] = Brush(light ? "#7A4E00" : "#F0D08A");

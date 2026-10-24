@@ -4,6 +4,8 @@ namespace MacKeys;
 
 public partial class App : Application
 {
+    public const string ProductName = "Mac Keys for Windows";
+
     private MainWindow? _window;
 
     public static bool IsExiting { get; set; }
@@ -28,7 +30,7 @@ public partial class App : Application
 
         DispatcherUnhandledException += (_, args) =>
         {
-            MessageBox.Show(args.Exception.Message, "Mac Keys", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(args.Exception.Message, ProductName, MessageBoxButton.OK, MessageBoxImage.Error);
             args.Handled = true;
         };
 

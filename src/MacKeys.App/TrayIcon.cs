@@ -43,7 +43,7 @@ internal sealed class TrayIcon : IDisposable
         _source = new HwndSource(parameters);
         _source.AddHook(WndProc);
         _icon = AppIcon.CreateIcon();
-        Add("Mac Keys");
+        Add(App.ProductName);
     }
 
     public event Action? OpenRequested;
@@ -65,7 +65,7 @@ internal sealed class TrayIcon : IDisposable
     {
         if (_added)
         {
-            var data = CreateData("Mac Keys");
+            var data = CreateData(App.ProductName);
             Shell_NotifyIconW(NimDelete, ref data);
             _added = false;
         }
