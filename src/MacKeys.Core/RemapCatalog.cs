@@ -23,6 +23,7 @@ public static class RemapCatalog
         new("Alt+A", "Ctrl+A", "모두 선택", "164;65", "162;65"),
         new("Alt+F", "Ctrl+F", "찾기", "164;70", "162;70"),
         new("Alt+N", "Ctrl+N", "새로 만들기", "164;78", "162;78"),
+        new("Alt+Shift+N", "Ctrl+Shift+N", "시크릿 창", "164;160;78", "162;160;78"),
         new("Alt+T", "Ctrl+T", "새 탭", "164;84", "162;84"),
         new("Alt+Shift+T", "Ctrl+Shift+T", "닫은 탭 다시 열기", "164;160;84", "162;160;84"),
         new("Alt+R", "Ctrl+R", "새로고침", "164;82", "162;82"),

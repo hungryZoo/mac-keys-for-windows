@@ -2,13 +2,13 @@
 
 게임이 전경일 때 맥 단축키를 잠시 끄는 Windows 트레이 앱입니다. 키를 직접 가로채지 않고, PowerToys Keyboard Manager 프로필만 바꿉니다.
 
-[1.0.0 받기](https://github.com/hungryZoo/mac-keys-for-windows/releases/tag/v1.0.0)
+[1.0.1 받기](https://github.com/hungryZoo/mac-keys-for-windows/releases/tag/v1.0.1)
 
 ## 설치
 
 Windows 10 또는 11, 64비트가 필요합니다.
 
-1. 릴리즈에서 `MacKeys-1.0.0-win-x64.exe` 를 받아 실행합니다. .NET은 실행 파일에 포함되어 있습니다.
+1. 릴리즈에서 `MacKeys-1.0.1-win-x64.exe` 를 받아 실행합니다. .NET은 실행 파일에 포함되어 있습니다.
 2. PowerToys를 설치하고 Keyboard Manager를 켭니다. 모듈 기본값은 꺼짐이라, 설정 파일만 있으면 키는 바뀌지 않습니다.
 3. 설정의 **적용 게임**에 게임을 넣습니다.
 
@@ -52,6 +52,7 @@ PowerToys가 없으면 앱 설정의 설치 버튼으로 `winget install --id Mi
 | Alt+A | 모두 선택 |
 | Alt+F | 찾기 |
 | Alt+N | 새로 만들기 |
+| Alt+Shift+N | 시크릿 창 |
 | Alt+T | 새 탭 |
 | Alt+Shift+T | 닫은 탭 다시 열기 |
 | Alt+R | 새로고침 |
