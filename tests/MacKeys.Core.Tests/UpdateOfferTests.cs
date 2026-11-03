@@ -39,19 +39,65 @@ public class UpdateOfferTests
             {
               "name": "MacKeys-1.0.4-win-x64.exe",
               "browser_download_url": "https://github.com/hungryZoo/mac-keys-for-windows/releases/download/v1.0.4/MacKeys-1.0.4-win-x64.exe"
+            },
+            {
+              "name": "MacKeys-Setup-1.0.4.exe",
+              "browser_download_url": "https://github.com/hungryZoo/mac-keys-for-windows/releases/download/v1.0.4/MacKeys-Setup-1.0.4.exe"
             }
           ]
         }
         """;
 
     [Fact]
-    public void Newer_release_keeps_the_notes_and_the_win_x64_exe()
+    public void Newer_release_keeps_the_notes_and_the_setup_exe()
     {
         var offer = UpdateOffers.Choose("1.0.3", null, Release);
         Assert.NotNull(offer);
         Assert.Equal("1.0.4", offer.Version);
         Assert.Equal("휠 위치를 고쳤습니다.", offer.Notes);
-        Assert.EndsWith("MacKeys-1.0.4-win-x64.exe", offer.DownloadUrl);
+        Assert.EndsWith("MacKeys-Setup-1.0.4.exe", offer.DownloadUrl);
+    }
+
+    [Fact]
+    public void A_program_exe_is_not_used_as_the_installer()
+    {
+        const string programOnly = """
+            {
+              "tag_name": "v1.0.4",
+              "body": "노트",
+              "assets": [
+                {
+                  "name": "MacKeys-1.0.4-win-x64.exe",
+                  "browser_download_url": "https://github.com/hungryZoo/mac-keys-for-windows/releases/download/v1.0.4/MacKeys-1.0.4-win-x64.exe"
+                }
+              ]
+            }
+            """;
+
+        var offer = UpdateOffers.Choose("1.0.3", null, programOnly);
+        Assert.NotNull(offer);
+        Assert.Null(offer.DownloadUrl);
+    }
+
+    [Fact]
+    public void Setup_name_match_is_case_insensitive()
+    {
+        const string json = """
+            {
+              "tag_name": "v1.0.5",
+              "body": "노트",
+              "assets": [
+                {
+                  "name": "MACKEYS-SETUP-1.0.5.EXE",
+                  "browser_download_url": "https://github.com/hungryZoo/mac-keys-for-windows/releases/download/v1.0.5/MACKEYS-SETUP-1.0.5.EXE"
+                }
+              ]
+            }
+            """;
+
+        var offer = UpdateOffers.Choose("1.0.4", null, json);
+        Assert.NotNull(offer);
+        Assert.EndsWith("MACKEYS-SETUP-1.0.5.EXE", offer.DownloadUrl);
     }
 
     [Fact]
@@ -76,8 +122,8 @@ public class UpdateOfferTests
     {
         Assert.Null(UpdateOffers.Choose("1.0.3", null, "{"));
         var foreign = Release.Replace(
-            "https://github.com/hungryZoo/mac-keys-for-windows/releases/download/v1.0.4/MacKeys-1.0.4-win-x64.exe",
-            "https://example.com/MacKeys.exe",
+            "https://github.com/hungryZoo/mac-keys-for-windows/releases/download/v1.0.4/MacKeys-Setup-1.0.4.exe",
+            "https://example.com/MacKeys-Setup.exe",
             StringComparison.Ordinal);
         var offer = UpdateOffers.Choose("1.0.3", null, foreign);
         Assert.NotNull(offer);

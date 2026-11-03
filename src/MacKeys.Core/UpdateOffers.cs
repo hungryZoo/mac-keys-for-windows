@@ -46,22 +46,23 @@ public static class UpdateOffers
             }
         }
 
-        return new UpdateOffer(latest.ToString(), notes, Win64ExeUrl(assets));
+        return new UpdateOffer(latest.ToString(), notes, SetupExeUrl(assets));
     }
 
-    public static string? Win64ExeUrl(IReadOnlyList<(string Name, string Url)> assets)
+    // 1.0.3은 이름에 win-x64가 있는 exe를 골라 실행 중인 파일 위에 복사한다.
+    // 릴리즈에 그 파일도 두는 이유는, 설치 파일만 있으면 1.0.3이 설치 파일을 자기 자리에 덮어쓰기 때문이다.
+    // 이 버전은 이름에 setup이 있는 exe만 설치 파일로 받는다.
+    public static string? SetupExeUrl(IReadOnlyList<(string Name, string Url)> assets)
     {
-        string? anyExe = null;
         foreach (var (name, url) in assets)
         {
             if (!IsReleaseAssetUrl(url) || !name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
                 continue;
-            if (name.Contains("win-x64", StringComparison.OrdinalIgnoreCase))
+            if (name.Contains("setup", StringComparison.OrdinalIgnoreCase))
                 return url;
-            anyExe ??= url;
         }
 
-        return anyExe;
+        return null;
     }
 
     public static bool IsReleaseAssetUrl(string url)

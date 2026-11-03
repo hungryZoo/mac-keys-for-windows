@@ -49,7 +49,7 @@ public partial class UpdatePromptWindow : Window
         StatusText.Text = "받는 중...";
         try
         {
-            UpdateInstaller.EnsureCanReplace(StartupRegistration.CurrentExecutable());
+            UpdateInstaller.EnsureCanInstall();
         }
         catch (Exception exception)
         {

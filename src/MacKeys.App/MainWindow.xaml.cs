@@ -157,9 +157,8 @@ public partial class MainWindow : Window
             if (prompt.Choice != UpdateChoice.Install || prompt.DownloadedPath == null)
                 return;
 
-            var target = StartupRegistration.CurrentExecutable();
-            UpdateInstaller.EnsureCanReplace(target);
-            UpdateInstaller.ScheduleReplace(target, prompt.DownloadedPath);
+            UpdateInstaller.EnsureCanInstall();
+            UpdateInstaller.ScheduleInstall(prompt.DownloadedPath);
             ExitApplication();
         }
         catch (Exception exception)

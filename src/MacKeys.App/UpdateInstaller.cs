@@ -6,21 +6,22 @@ namespace MacKeys;
 
 internal static class UpdateInstaller
 {
-    public static void EnsureCanReplace(string targetPath)
+    public static void EnsureCanInstall()
     {
-        var directory = Path.GetDirectoryName(targetPath);
-        if (string.IsNullOrEmpty(directory))
-            throw new InvalidOperationException("실행 파일이 있는 폴더를 찾지 못했습니다.");
-
+        var directory = InstallDirectory();
+        Directory.CreateDirectory(directory);
         var probe = Path.Combine(directory, ".mackeys-update-" + Guid.NewGuid().ToString("N"));
         File.WriteAllText(probe, "");
         File.Delete(probe);
     }
 
-    // The running file stays locked, so a second process waits, copies, and starts it again.
-    public static void ScheduleReplace(string targetPath, string downloadedPath)
+    // The running exe stays locked, so this process has to exit before setup replaces it.
+    // Setup itself starts the installed exe again.
+    public static void ScheduleInstall(string setupPath)
     {
-        if (targetPath.Contains('"') || downloadedPath.Contains('"'))
+        if (string.IsNullOrWhiteSpace(setupPath) || !File.Exists(setupPath))
+            throw new InvalidOperationException("설치 파일을 찾지 못했습니다.");
+        if (setupPath.Contains('"'))
             throw new InvalidOperationException("경로에 따옴표가 있어 업데이트할 수 없습니다.");
 
         var scriptDirectory = Path.Combine(Path.GetTempPath(), "MacKeys", "update");
@@ -32,7 +33,7 @@ internal static class UpdateInstaller
         var start = new ProcessStartInfo
         {
             FileName = powershell,
-            Arguments = $"-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"{scriptPath}\" -ProcessId {Environment.ProcessId} -Source \"{downloadedPath}\" -Target \"{targetPath}\"",
+            Arguments = $"-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"{scriptPath}\" -ProcessId {Environment.ProcessId} -Setup \"{setupPath}\"",
             UseShellExecute = false,
             CreateNoWindow = true,
         };
@@ -40,30 +41,44 @@ internal static class UpdateInstaller
             throw new InvalidOperationException("업데이트를 적용할 프로세스를 시작하지 못했습니다.");
     }
 
+    private static string InstallDirectory()
+    {
+        var root = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        if (string.IsNullOrWhiteSpace(root))
+            throw new InvalidOperationException("사용자 폴더를 찾지 못했습니다.");
+        return Path.Combine(root, "MacKeys");
+    }
+
     private const string Script = """
         param(
           [int]$ProcessId,
-          [string]$Source,
-          [string]$Target
+          [string]$Setup
         )
         $deadline = (Get-Date).AddSeconds(40)
         while ((Get-Process -Id $ProcessId -ErrorAction SilentlyContinue) -and ((Get-Date) -lt $deadline)) {
           Start-Sleep -Milliseconds 200
         }
-        $copied = $false
-        for ($try = 0; $try -lt 20 -and -not $copied; $try++) {
-          try {
-            Copy-Item -LiteralPath $Source -Destination $Target -Force
-            $copied = $true
-          } catch {
-            Start-Sleep -Milliseconds 500
-          }
-        }
-        if (-not $copied) {
+        if (Get-Process -Id $ProcessId -ErrorAction SilentlyContinue) {
           Add-Type -AssemblyName PresentationFramework
-          [System.Windows.MessageBox]::Show('새 실행 파일로 바꾸지 못했습니다.', 'Mac Keys for Windows')
+          [System.Windows.MessageBox]::Show('실행 중인 프로그램이 끝나지 않아 업데이트하지 못했습니다.', 'Mac Keys for Windows')
           exit 1
         }
-        Start-Process -FilePath $Target
+        $log = Join-Path $env:TEMP 'MacKeys\update\setup.log'
+        $psi = New-Object System.Diagnostics.ProcessStartInfo
+        $psi.FileName = $Setup
+        $psi.Arguments = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /LOG="' + $log + '"'
+        $psi.UseShellExecute = $true
+        $installer = [System.Diagnostics.Process]::Start($psi)
+        if ($null -eq $installer) {
+          Add-Type -AssemblyName PresentationFramework
+          [System.Windows.MessageBox]::Show('설치 프로그램을 시작하지 못했습니다.', 'Mac Keys for Windows')
+          exit 1
+        }
+        $installer.WaitForExit()
+        if ($installer.ExitCode -ne 0) {
+          Add-Type -AssemblyName PresentationFramework
+          [System.Windows.MessageBox]::Show("설치에 실패했습니다. (코드 $($installer.ExitCode))`n$log", 'Mac Keys for Windows')
+          exit 1
+        }
         """;
 }

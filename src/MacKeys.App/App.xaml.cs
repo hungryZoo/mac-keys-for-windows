@@ -22,7 +22,9 @@ public partial class App : Application
         base.OnStartup(e);
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-        if (!SingleInstance.TryBecomePrimary(() => Dispatcher.BeginInvoke(BringToFront)))
+        if (!SingleInstance.TryBecomePrimary(
+                () => Dispatcher.BeginInvoke(BringToFront),
+                () => Dispatcher.BeginInvoke(() => _window?.ExitApplication(interactive: false))))
         {
             Shutdown();
             return;

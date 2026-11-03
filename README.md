@@ -2,21 +2,25 @@
 
 게임이 전경일 때 맥 단축키를 잠시 끄는 Windows 트레이 앱입니다. 키를 직접 가로채지 않고, PowerToys Keyboard Manager 프로필만 바꿉니다.
 
-[1.0.3 받기](https://github.com/hungryZoo/mac-keys-for-windows/releases/tag/v1.0.3)
+[1.0.4 받기](https://github.com/hungryZoo/mac-keys-for-windows/releases/tag/v1.0.4)
 
 ## 설치
 
 Windows 10 또는 11, 64비트가 필요합니다.
 
-1. 릴리즈에서 `MacKeys-1.0.3-win-x64.exe` 를 받아 실행합니다. .NET은 실행 파일에 포함되어 있습니다.
+1. 릴리즈에서 `MacKeys-Setup-1.0.4.exe` 를 받아 실행합니다. 관리자 권한은 필요 없습니다. 프로그램은 `%LOCALAPPDATA%\MacKeys\MacKeys.exe` 에 설치되고, 설정 > 앱에 나타납니다. .NET은 실행 파일에 포함되어 있습니다.
 2. PowerToys를 설치하고 Keyboard Manager를 켭니다. 모듈 기본값은 꺼짐이라, 설정 파일만 있으면 키는 바뀌지 않습니다.
 3. 설정의 **적용 게임**에 게임을 넣습니다.
 
 PowerToys가 없으면 앱 설정의 설치 버튼으로 `winget install --id Microsoft.PowerToys -e` 를 실행할 수 있습니다. Microsoft Store로 여는 버튼도 있습니다.
 
+제거는 설정 > 앱에서 합니다. 게임 목록은 지워지지 않습니다. 로그인할 때 시작을 켜 둔 적이 있으면 설치할 때 그 항목을 위 실행 파일로 바꿉니다. 꺼 두었다면 켜지 않습니다. 제거할 때는 로그인 시작 항목도 지웁니다.
+
 창을 닫아도 트레이에 남습니다. 끝내려면 트레이 아이콘을 오른쪽 클릭하고 **종료**를 고릅니다.
 
-실행하면 GitHub 릴리즈를 확인합니다. 새 버전이 있으면 변경 내용을 보여 주고, **이 버전 건너뛰기**, **업데이트**, **다음에 알림** 중에서 고릅니다. 업데이트를 고르면 새 실행 파일을 받은 뒤 앱을 다시 시작합니다. 네트워크가 없으면 그냥 넘어갑니다.
+실행하면 GitHub 릴리즈를 확인합니다. 새 버전이 있으면 변경 내용을 보여 주고, **이 버전 건너뛰기**, **업데이트**, **다음에 알림** 중에서 고릅니다. 업데이트를 고르면 설치 파일을 받은 뒤 앱을 끝내고, 설치 프로그램이 같은 위치에 다시 설치한 다음 앱을 띄웁니다. 네트워크가 없으면 그냥 넘어갑니다.
+
+1.0.3의 업데이트 버튼은 이름이 `win-x64` 인 실행 파일을 받아 지금 파일 위에 덮어 씁니다. 그 파일도 같은 릴리즈에 있습니다. 설정 > 앱에 등록하려면 `MacKeys-Setup-1.0.4.exe` 를 한 번 실행하면 됩니다.
 
 ## 상태
 
@@ -82,17 +86,20 @@ PowerToys 편집기에서 키를 바꿔도, 이 앱을 적용하거나 다시 �
 
 ## 파일
 
-게임 목록은 `%LOCALAPPDATA%\MacKeys\settings.json` 에 있습니다.
+프로그램은 `%LOCALAPPDATA%\MacKeys\MacKeys.exe` 입니다. 게임 목록은 같은 폴더의 `settings.json` 에 있습니다. 제거해도 이 파일은 남습니다.
 
 Keyboard Manager 프로필은 `%LOCALAPPDATA%\Microsoft\PowerToys\Keyboard Manager\` 의 `default.json`, `game.json`, `off.json` 입니다.
 
 ## 소스에서 빌드
 
-.NET 8 SDK가 필요합니다.
+.NET 8 SDK가 필요합니다. 설치 파일은 [Inno Setup 6](https://jrsoftware.org/isinfo.php) 이 필요합니다.
 
 ```powershell
-dotnet build src/MacKeys.App/MacKeys.App.csproj -c Release
 dotnet test MacKeys.sln
+dotnet publish src/MacKeys.App/MacKeys.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:DebugType=none -p:DebugSymbols=false
+& "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" installer/MacKeys.iss
 ```
 
-실행 파일은 `src\MacKeys.App\bin\Release\net8.0-windows\MacKeys.exe` 입니다. 이 파일은 .NET 8 데스크톱 런타임이 있는 PC에서 실행됩니다. 릴리즈에 올린 파일은 런타임을 포함합니다.
+사용자만 설치한 경우에는 `%LOCALAPPDATA%\Programs\Inno Setup 6\ISCC.exe` 입니다.
+
+실행 파일은 `src\MacKeys.App\bin\Release\net8.0-windows\win-x64\publish\MacKeys.exe` 입니다. 설치 파일은 `dist\MacKeys-Setup-1.0.4.exe` 입니다. 릴리즈에 올린 파일은 런타임을 포함합니다.

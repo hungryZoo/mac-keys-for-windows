@@ -3,13 +3,15 @@ namespace MacKeys;
 internal static class SingleInstance
 {
     private const string MutexName = @"Local\MacKeys.SingleInstance";
-    private const string EventName = @"Local\MacKeys.ShowWindow";
+    private const string ShowEventName = @"Local\MacKeys.ShowWindow";
+    private const string ExitEventName = @"Local\MacKeys.Exit";
 
     private static Mutex? _mutex;
     private static EventWaitHandle? _showEvent;
+    private static EventWaitHandle? _exitEvent;
     private static Thread? _thread;
 
-    public static bool TryBecomePrimary(Action show)
+    public static bool TryBecomePrimary(Action show, Action exit)
     {
         _mutex = new Mutex(false, MutexName);
         try
@@ -25,15 +27,27 @@ internal static class SingleInstance
             // The previous process ended without releasing the mutex. This process owns it now.
         }
 
-        _showEvent = new EventWaitHandle(false, EventResetMode.AutoReset, EventName);
+        _showEvent = new EventWaitHandle(false, EventResetMode.AutoReset, ShowEventName);
+        _exitEvent = new EventWaitHandle(false, EventResetMode.AutoReset, ExitEventName);
+        var handles = new WaitHandle[] { _showEvent, _exitEvent };
         _thread = new Thread(() =>
         {
-            while (_showEvent.WaitOne())
-                show();
+            while (true)
+            {
+                switch (WaitHandle.WaitAny(handles))
+                {
+                    case 0:
+                        show();
+                        break;
+                    default:
+                        exit();
+                        return;
+                }
+            }
         })
         {
             IsBackground = true,
-            Name = "MacKeys.ShowWindow",
+            Name = "MacKeys.InstanceEvents",
         };
         _thread.Start();
         return true;
@@ -43,7 +57,7 @@ internal static class SingleInstance
     {
         try
         {
-            using var existing = EventWaitHandle.OpenExisting(EventName);
+            using var existing = EventWaitHandle.OpenExisting(ShowEventName);
             existing.Set();
         }
         catch (WaitHandleCannotBeOpenedException)
