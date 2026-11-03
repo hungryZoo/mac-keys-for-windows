@@ -2,13 +2,13 @@
 
 게임이 전경일 때 맥 단축키를 잠시 끄는 Windows 트레이 앱입니다. 키를 직접 가로채지 않고, PowerToys Keyboard Manager 프로필만 바꿉니다.
 
-[1.0.1 받기](https://github.com/hungryZoo/mac-keys-for-windows/releases/tag/v1.0.1)
+[1.0.2 받기](https://github.com/hungryZoo/mac-keys-for-windows/releases/tag/v1.0.2)
 
 ## 설치
 
 Windows 10 또는 11, 64비트가 필요합니다.
 
-1. 릴리즈에서 `MacKeys-1.0.1-win-x64.exe` 를 받아 실행합니다. .NET은 실행 파일에 포함되어 있습니다.
+1. 릴리즈에서 `MacKeys-1.0.2-win-x64.exe` 를 받아 실행합니다. .NET은 실행 파일에 포함되어 있습니다.
 2. PowerToys를 설치하고 Keyboard Manager를 켭니다. 모듈 기본값은 꺼짐이라, 설정 파일만 있으면 키는 바뀌지 않습니다.
 3. 설정의 **적용 게임**에 게임을 넣습니다.
 
@@ -38,7 +38,7 @@ PowerToys가 없으면 앱 설정의 설치 버튼으로 `winget install --id Mi
 
 항상 적용: Caps Lock → 한/영
 
-게임 중에는 아래를 끕니다. 왼쪽 Alt만 맥의 Command처럼 씁니다. 오른쪽 Alt, Alt+Tab, Windows 키 조합은 바꾸지 않습니다.
+게임 중에는 아래를 끕니다. 왼쪽 Alt만 맥의 Command처럼 씁니다. 오른쪽 Alt, Alt+Tab, Windows 키 조합은 바꾸지 않습니다. 휠은 Keyboard Manager가 바꾸지 못하므로, 맥 단축키가 켜져 있을 때만 이 앱이 직접 바꿉니다.
 
 | 입력 | 동작 |
 | --- | --- |
@@ -57,6 +57,9 @@ PowerToys가 없으면 앱 설정의 설치 버튼으로 `winget install --id Mi
 | Alt+Shift+T | 닫은 탭 다시 열기 |
 | Alt+R | 새로고침 |
 | Alt+Q | 종료 |
+| Alt+Shift+4 | 화면 캡처 |
+| Alt+휠 ↑ | 확대 |
+| Alt+휠 ↓ | 축소 |
 | Alt+← | 홈 |
 | Alt+→ | 엔드 |
 | Alt+↑ | 페이지 업 |

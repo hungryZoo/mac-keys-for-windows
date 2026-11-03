@@ -129,6 +129,7 @@ public class ProfileDocumentTests
         ("164;160;84", "162;160;84"),
         ("164;82", "162;82"),
         ("164;81", "164;115"),
+        ("164;160;52", "44"),
         ("164;37", "36"),
         ("164;39", "35"),
         ("164;38", "33"),
@@ -575,6 +576,28 @@ public class StartupRegistrationTests
         {
             registration.Disable();
         }
+    }
+}
+
+public class WheelZoomTests
+{
+    [Fact]
+    public void Left_alt_wheel_becomes_zoom()
+    {
+        Assert.True(WheelZoom.ShouldConvert(new WheelModifiers(true, false, false, false, false, false)));
+    }
+
+    [Theory]
+    [InlineData(false, false, false, false, false, false)]
+    [InlineData(false, true, false, false, false, false)]
+    [InlineData(true, true, false, false, false, false)]
+    [InlineData(true, false, true, false, false, false)]
+    [InlineData(true, false, false, true, false, false)]
+    [InlineData(true, false, false, false, true, false)]
+    [InlineData(true, false, false, false, false, true)]
+    public void Other_wheels_stay_put(bool leftAlt, bool rightAlt, bool ctrl, bool shift, bool win, bool injected)
+    {
+        Assert.False(WheelZoom.ShouldConvert(new WheelModifiers(leftAlt, rightAlt, ctrl, shift, win, injected)));
     }
 }
 

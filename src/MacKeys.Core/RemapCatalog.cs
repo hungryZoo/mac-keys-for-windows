@@ -28,9 +28,16 @@ public static class RemapCatalog
         new("Alt+Shift+T", "Ctrl+Shift+T", "닫은 탭 다시 열기", "164;160;84", "162;160;84"),
         new("Alt+R", "Ctrl+R", "새로고침", "164;82", "162;82"),
         new("Alt+Q", "Alt+F4", "종료", "164;81", "164;115"),
+        new("Alt+Shift+4", "PrintScreen", "화면 캡처", "164;160;52", "44"),
         new("Alt+←", "Home", "홈", "164;37", "36"),
         new("Alt+→", "End", "엔드", "164;39", "35"),
         new("Alt+↑", "Page Up", "페이지 업", "164;38", "33"),
         new("Alt+↓", "Page Down", "페이지 다운", "164;40", "34"),
+    };
+
+    public static readonly IReadOnlyList<ShortcutRemap> WheelHints = new ShortcutRemap[]
+    {
+        new("Alt+휠 ↑", "Ctrl+휠 ↑", "확대", "", ""),
+        new("Alt+휠 ↓", "Ctrl+휠 ↓", "축소", "", ""),
     };
 }

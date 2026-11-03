@@ -12,6 +12,7 @@ public partial class MainWindow : Window
     private readonly StartupRegistration _startup = new();
     private readonly KeyboardManagerStore _store = new(KeyboardManagerStore.DefaultDirectory);
     private readonly DispatcherTimer _timer;
+    private readonly WheelZoomHook _wheel = new();
     private AppSettings _settings = new();
     private ProfileSession _session = null!;
     private TrayIcon? _tray;
@@ -28,7 +29,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         Icon = System.Windows.Media.Imaging.BitmapFrame.Create(AppIcon.Bitmap);
         AlwaysList.ItemsSource = new[] { RemapCatalog.AlwaysAppliedDisplay };
-        ShortcutList.ItemsSource = RemapCatalog.Shortcuts;
+        ShortcutList.ItemsSource = RemapCatalog.Shortcuts.Concat(RemapCatalog.WheelHints).ToArray();
         _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(Profiles.ForegroundPollMilliseconds) };
         _timer.Tick += (_, _) => Tick();
         Loaded += (_, _) => Start();
@@ -48,6 +49,7 @@ public partial class MainWindow : Window
 
         App.IsExiting = true;
         _timer.Stop();
+        _wheel.Dispose();
         try
         {
             _session?.Exit();
@@ -396,7 +398,7 @@ public partial class MainWindow : Window
             var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
             var typeface = new Typeface(FontFamily, FontStyles.Normal, FontWeights.SemiBold, FontStretches.Normal);
             var longest = 0.0;
-            foreach (var shortcut in RemapCatalog.Shortcuts)
+            foreach (var shortcut in RemapCatalog.Shortcuts.Concat(RemapCatalog.WheelHints))
             {
                 var formatted = new FormattedText(
                     $"{shortcut.From} → {shortcut.To}   {shortcut.Meaning}",
@@ -426,7 +428,7 @@ public partial class MainWindow : Window
             var measured = SettingsRoot.DesiredSize.Height + SettingsRoot.Margin.Top + SettingsRoot.Margin.Bottom;
             SettingsRoot.InvalidateMeasure();
 
-            var rows = (RemapCatalog.Shortcuts.Count + 1) / 2;
+            var rows = (RemapCatalog.Shortcuts.Count + RemapCatalog.WheelHints.Count + 1) / 2;
             var shortcutCard = 130 + rows * 40;
             var gamesCard = 250 + _settings.Games.Count * 44;
             var conservative = 120 + Math.Max(shortcutCard, gamesCard) + 160 + 52 + 40;
@@ -508,6 +510,7 @@ public partial class MainWindow : Window
         ForegroundStatusText.Text = DescribeForeground(_foreground, _session.Suspended);
         if (_tray != null && profile != null)
             _tray.SetTooltip(App.ProductName + " — " + ModeName(profile));
+        _wheel.SetEnabled(profile == Profiles.Daily);
     }
 
     private void UpdateSuspendButton()
