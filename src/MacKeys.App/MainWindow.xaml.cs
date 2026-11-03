@@ -131,6 +131,41 @@ public partial class MainWindow : Window
         Render();
         _timer.Start();
         EnsureContentFits();
+        Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, () => _ = CheckForUpdateAsync());
+    }
+
+    private async Task CheckForUpdateAsync()
+    {
+        try
+        {
+            var offer = await UpdateClient.FindNewerAsync(AppRelease.Current, _settings.SkippedUpdate);
+            if (offer == null || App.IsExiting || !IsLoaded)
+                return;
+
+            Show();
+            var prompt = new UpdatePromptWindow(AppRelease.Current, offer) { Owner = this };
+            if (prompt.ShowDialog() != true)
+                return;
+
+            if (prompt.Choice == UpdateChoice.Skip)
+            {
+                _settings.SkippedUpdate = offer.Version;
+                AppSettingsStore.Save(_settingsPath, _settings);
+                return;
+            }
+
+            if (prompt.Choice != UpdateChoice.Install || prompt.DownloadedPath == null)
+                return;
+
+            var target = StartupRegistration.CurrentExecutable();
+            UpdateInstaller.EnsureCanReplace(target);
+            UpdateInstaller.ScheduleReplace(target, prompt.DownloadedPath);
+            ExitApplication();
+        }
+        catch (Exception exception)
+        {
+            SetAction(exception.Message);
+        }
     }
 
     private void Tick()

@@ -1,0 +1,52 @@
+<Window x:Class="MacKeys.UpdatePromptWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="업데이트"
+        Width="560"
+        Height="460"
+        MinWidth="440"
+        MinHeight="320"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="{DynamicResource WindowBackground}"
+        FontFamily="Malgun Gothic, Segoe UI"
+        FontSize="13"
+        ShowInTaskbar="False">
+    <DockPanel Margin="16">
+        <StackPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+            <TextBlock x:Name="StatusText" Style="{StaticResource Muted}" Margin="0,0,0,8" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="SkipButton"
+                        Content="이 버전 건너뛰기"
+                        Style="{StaticResource ActionButton}"
+                        Click="SkipClick"
+                        AutomationProperties.AutomationId="SkipUpdate" />
+                <Button x:Name="UpdateButton"
+                        Content="업데이트"
+                        Style="{StaticResource PrimaryButton}"
+                        Click="UpdateClick"
+                        AutomationProperties.AutomationId="InstallUpdate" />
+                <Button x:Name="LaterButton"
+                        Content="다음에 알림"
+                        Style="{StaticResource ActionButton}"
+                        Margin="0"
+                        IsCancel="True"
+                        AutomationProperties.AutomationId="RemindUpdateLater" />
+            </StackPanel>
+        </StackPanel>
+        <TextBlock x:Name="HeadlineText" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,4" />
+        <TextBlock x:Name="CurrentText" Style="{StaticResource Muted}" Margin="0,0,0,10" />
+        <Border BorderBrush="{DynamicResource CardBorder}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Background="{DynamicResource ListBackground}"
+                Padding="10">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" FontWeight="SemiBold" Margin="0,0,0,6" Text="변경 내용" />
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBlock x:Name="NotesText" TextWrapping="Wrap" />
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+    </DockPanel>
+</Window>

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
 namespace MacKeys;
@@ -8,6 +9,9 @@ public sealed class AppSettings
     public bool Disabled { get; set; }
 
     public List<GameEntry> Games { get; set; } = new();
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? SkippedUpdate { get; set; }
 }
 
 public readonly record struct AppSettingsLoad(AppSettings Settings, string? Error);

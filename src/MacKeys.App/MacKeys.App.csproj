@@ -9,7 +9,11 @@
     <AssemblyName>MacKeys</AssemblyName>
     <ApplicationIcon>Assets\mac-keys.ico</ApplicationIcon>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.3</AssemblyVersion>
+    <FileVersion>1.0.3</FileVersion>
+    <InformationalVersion>1.0.3</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Product>Mac Keys for Windows</Product>
     <AssemblyTitle>Mac Keys for Windows</AssemblyTitle>
     <Description>게임 창이 전경일 때 PowerToys Keyboard Manager 프로필을 바꿉니다.</Description>
