@@ -1,4 +1,6 @@
 ﻿; 버전은 src/MacKeys.App/MacKeys.App.csproj 의 Version 과 같게 유지한다.
+; 릴리즈에는 MacKeys-Setup-버전.exe 와 함께 MacKeys-Setup.exe 를 올린다.
+; 리드미의 latest/download/MacKeys-Setup.exe 가 그 고정 이름을 본다.
 ; AppId 는 한 번 정하면 바꾸지 않는다. 바꾸면 설정 앱이 다른 프로그램으로 본다.
 
 #define MyAppName "Mac Keys for Windows"

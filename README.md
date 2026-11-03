@@ -2,13 +2,15 @@
 
 게임이 전경일 때 맥 단축키를 잠시 끄는 Windows 트레이 앱입니다. 키를 직접 가로채지 않고, PowerToys Keyboard Manager 프로필만 바꿉니다.
 
-[1.0.4 받기](https://github.com/hungryZoo/mac-keys-for-windows/releases/tag/v1.0.4)
+[설치 파일 받기](https://github.com/hungryZoo/mac-keys-for-windows/releases/latest/download/MacKeys-Setup.exe)
+
+이 주소는 항상 최신 릴리즈의 설치 파일을 받습니다. 저장되는 이름은 `MacKeys-Setup.exe` 입니다.
 
 ## 설치
 
 Windows 10 또는 11, 64비트가 필요합니다.
 
-1. 릴리즈에서 `MacKeys-Setup-1.0.4.exe` 를 받아 실행합니다. 관리자 권한은 필요 없습니다. 프로그램은 `%LOCALAPPDATA%\MacKeys\MacKeys.exe` 에 설치되고, 설정 > 앱에 나타납니다. .NET은 실행 파일에 포함되어 있습니다.
+1. 위의 설치 파일을 받아 실행합니다. 관리자 권한은 필요 없습니다. 프로그램은 `%LOCALAPPDATA%\MacKeys\MacKeys.exe` 에 설치되고, 설정 > 앱에 나타납니다. .NET은 실행 파일에 포함되어 있습니다.
 2. PowerToys를 설치하고 Keyboard Manager를 켭니다. 모듈 기본값은 꺼짐이라, 설정 파일만 있으면 키는 바뀌지 않습니다.
 3. 설정의 **적용 게임**에 게임을 넣습니다.
 
@@ -20,7 +22,7 @@ PowerToys가 없으면 앱 설정의 설치 버튼으로 `winget install --id Mi
 
 실행하면 GitHub 릴리즈를 확인합니다. 새 버전이 있으면 변경 내용을 보여 주고, **이 버전 건너뛰기**, **업데이트**, **다음에 알림** 중에서 고릅니다. 업데이트를 고르면 설치 파일을 받은 뒤 앱을 끝내고, 설치 프로그램이 같은 위치에 다시 설치한 다음 앱을 띄웁니다. 네트워크가 없으면 그냥 넘어갑니다.
 
-1.0.3의 업데이트 버튼은 이름이 `win-x64` 인 실행 파일을 받아 지금 파일 위에 덮어 씁니다. 그 파일도 같은 릴리즈에 있습니다. 설정 > 앱에 등록하려면 `MacKeys-Setup-1.0.4.exe` 를 한 번 실행하면 됩니다.
+1.0.3의 업데이트 버튼은 이름이 `win-x64` 인 실행 파일을 받아 지금 파일 위에 덮어 씁니다. 그 파일도 같은 릴리즈에 있습니다. 설정 > 앱에 등록하려면 위의 설치 파일을 한 번 실행하면 됩니다.
 
 ## 상태
 
